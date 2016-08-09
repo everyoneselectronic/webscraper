@@ -2,8 +2,6 @@
 	/*
 	 * Goutte - How to click a link on a webpage
 	 */
-	require 'phpmailer/PHPMailerAutoload.php';
-
 	$loader = require 'vendor/autoload.php';
 	$loader->add('AppName', __DIR__.'/../src/');
 
@@ -171,9 +169,27 @@
 		//PHPMailer Object
 		$mail = new PHPMailer;
 
+		// Tell PHPMailer to use SMTP
+		$mail->isSMTP();
+		$mail->SMTPDebug = 2;
+		$mail->Debugoutput = 'html';
+		$mail->Host = 'smtp.gmail.com';
+		// use
+		// $mail->Host = gethostbyname('smtp.gmail.com');
+		// if your network does not support SMTP over IPv6
+		//Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
+		$mail->Port = 587;
+		//Set the encryption system to use - ssl (deprecated) or tls
+		$mail->SMTPSecure = 'tls';
+		//Whether to use SMTP authentication
+		$mail->SMTPAuth = true;
+		//Username to use for SMTP authentication - use full email address for gmail
+		$mail->Username = "fogertyliam@gmail.com";
+		//Password to use for SMTP authentication
+		$mail->Password = "rirfzgmblzjbrboe";
+
 		//From email address and name
-		$mail->From = "fogertyliam@gmail.com";
-		$mail->FromName = "Liam Fogerty";
+		$mail->setFrom("fogertyliam@gmail.com", "Liam Fogerty");
 
 		//To address and name
 		$mail->addAddress("fogertyliam@gmail.com", "Liam Fogerty");
@@ -187,11 +203,23 @@
 		$dir    = 'img/';
 		$files = scandir($dir);
 
-		foreach ($files as $file)
-		{
-			//Provide file path and name of the attachments
-			$mail->addAttachment($dir . $file); //Filename is optional
-		}
+		// foreach ($files as $file)
+		// {
+		// 	$str = $dir . $file;
+		// 	//Provide file path and name of the attachments
+		// 	if (is_file($str))
+		// 	{
+		// 		$mail->addAttachment($str);
+		// 		echo "<p>" . $dir . $file . "</p>";
+
+		// 	}
+		// 	// $str = $dir . $file;
+		// 	// array_push($a, $str);
+
+		// }
+
+		 //Filename is optional
+
 
 		$mail->Subject = "15 hidden friends";
 		$mail->Body = "<i>Mail body in HTML</i>";
